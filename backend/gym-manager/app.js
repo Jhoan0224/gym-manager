@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
 // apirest endpoints 
-import {userApp} from './src/controllers/user-controller.js'
-
+import {adminApp} from './src/controllers/user-controller.js'
+import { authApp } from './src/controllers/auth-controller.js';
 
 var app = express();
 
@@ -14,8 +14,8 @@ var app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -23,8 +23,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());  
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/gym-mng/user', userApp);
-
+app.use('/gym-mng/admin', adminApp);
+app.use('/gym-mgn/auth', authApp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,7 +39,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+//   res.render('error');
 });
 
 export default app;
