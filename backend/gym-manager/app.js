@@ -4,11 +4,25 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import { fileURLToPath } from 'url';
-// apirest endpoints 
-import {adminApp} from './src/controllers/user-controller.js'
-import { authApp } from './src/controllers/auth-controller.js';
+import cors from 'cors';
+
+// API Routes 
+import { authApp } from './src/routes/auth.route.js';
+import { adminSearchApp } from './src/routes/admin/admin-search.route.js';
+import { adminUsersApp } from './src/routes/admin/admin-users.route.js';
+
 
 var app = express();
+
+app.use(cors(
+//     {
+//   origin: 'http://localhost:5173',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+//   }
+));
+app.options('*', cors());
+
 
 // view engine setup
 const __filename = fileURLToPath(import.meta.url);
@@ -16,15 +30,15 @@ const __dirname = path.dirname(__filename);
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());  
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/gym-mng/admin', adminApp);
-app.use('/gym-mgn/auth', authApp);
+app.use('/gym-365/auth', authApp);
+app.use('/gym-365-mgmt/admin', adminUsersApp);
+app.use('/gym-365/user', adminSearchApp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
