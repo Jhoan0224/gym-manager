@@ -40,6 +40,7 @@ export const getAuthFormCheck = async (req, res, next) => {
             return res.status(400).json(VALIDATION_FAILED);
         }
     } catch (error) {
+        console.error(error)
         return res.status(500).json(SERVER_ERROR);
     }
 }

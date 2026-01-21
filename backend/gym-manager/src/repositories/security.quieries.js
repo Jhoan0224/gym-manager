@@ -22,3 +22,14 @@ export const ID_USUARIO_BY_LOGIN = `
     WHERE usr.email = ? AND usr.pass_hash = ?
     LIMIT 1
 `; 
+
+export const GET_ROLES_USUARIO_BY_ID = `
+    SELECT rol_usuario.nombre AS rol
+    FROM
+    rol_usuario
+    JOIN 
+        relacion_rol_usuario relroluset
+        on relroluset.id_rol_usuario = rol_usuario.id_rol_usuario
+    WHERE
+    relroluset.id_usuario = ?
+`;

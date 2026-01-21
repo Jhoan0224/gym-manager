@@ -6,18 +6,18 @@ const adminSearchApp = express.Router();
 adminSearchApp.use(express.json());
 
 
-adminSearchApp.get('/buscar-usuario/nombre/:nombre/apellido/:apellido',
-    authProcess,
+adminSearchApp.get('/find-usuario/nombre/:nombre/apellido/:apellido',
+    // authProcess,
     AdminSearchCtrl.findUsuarioByNames
 )
 
-adminSearchApp.get('/buscar-usuario/email/:email',
-    authProcess,
+adminSearchApp.get('/find-usuario/email/:email',
+    // authProcess,
     AdminSearchCtrl.findUsuarioByEmail
 )
 
-adminSearchApp.get('/buscar-usuario/id/:idUsuario',
-    authProcess,
+adminSearchApp.get('/find-usuario/id/:idUsuario',
+    // authProcess,
     AdminSearchCtrl.findUsuarioaByIdUsuario
 )
 

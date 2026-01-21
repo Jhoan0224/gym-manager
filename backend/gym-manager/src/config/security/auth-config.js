@@ -10,7 +10,7 @@ export function generateJWT(userDataToken) {
         roles: [...userDataToken.roles],
     }
     const options = {
-        expiresIn: '30min'
+        expiresIn: '60min'
     }
     
     return jwt.sign(payload, KEY_JTW, options);
@@ -24,7 +24,7 @@ export function verifyJWT(tokenAuth) {
         return decoded;
 
     } catch (error) {
-        console.log("Error in token's decodfication ", error)
+        // console.log("Error in token's decodfication ", error)
         return null;
     }
 }

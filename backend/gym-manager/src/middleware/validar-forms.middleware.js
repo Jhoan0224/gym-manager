@@ -4,23 +4,17 @@ import { SERVER_ERROR } from "../utils/message-response.js";
 // VALIDACIONES DE FORMULACION EN EL MIDDLEWARE
 
 export const formAtleta = (req, res, next) => {
-    const REQUEST_RESPONSE = {
-        success: '',
-        message: '',
-        data: {}
-    }
     try {
         const formAtleta = req.body;
         // validationResult es un json y contiene un booleano isValid y un String message
         const validationResult = validarForm.usuarioAtleta(formAtleta);
 
-        if (validationResult.isValid === true) {
+        if (validationResult.success === true) {
             // if the validation is true, go to the next layer, in this case is the Controller
             next(); 
         } else {
             res.status(400).json({
-                success: false,
-                message: validationResult.message,
+                ...validationResult,
                 data: {}
             });
         }

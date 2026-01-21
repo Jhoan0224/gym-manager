@@ -2,7 +2,7 @@ import { emailIsValid, duiIsValid, telefonoIsValido, edadAtletaIsValid, nombresI
 
 export function usuarioAtleta(formAtleta) {
     const VALIDATION_RESULT = {
-        isValid: false,
+        success: false,
         message: 'OK',
     }
  
@@ -28,26 +28,26 @@ export function usuarioAtleta(formAtleta) {
     // THE PASSWORD IS NOT VERIFY HERE 
 
     if(emailIsValid(formAtleta.email) === false) {
-        message = 'El formato del Email proporcionado no es valido';
-        return message;
+        VALIDATION_RESULT.message = 'El formato del Email proporcionado no es valido';
+        return VALIDATION_RESULT;
     }
     if (duiIsValid(formAtleta.dui) === false) {
-        message = 'El formato del DUI proporcionado no es valido';
-        return message;
+        VALIDATION_RESULT.message = 'El formato del DUI proporcionado no es valido';
+        return VALIDATION_RESULT;
     }
     if (telefonoIsValido(formAtleta.telefono) === false) {
-        message = 'El Telefono proporcionado no es valido';
-        return MESSAGE_RESPONSE;
+        VALIDATION_RESULT.message = 'El Telefono proporcionado no es valido';
+        return VALIDATION_RESULT;
     }
     else {
-        VALIDATION_RESULT.isValid = true;
-        return MESSAGE_RESPONSE;
+        VALIDATION_RESULT.success = true;
+        return VALIDATION_RESULT;
     }
 }
 
 export function usuarioResponsable(formResponsable) {
     const VALIDATION_RESULT = {
-        isValid: false,
+        success: false,
         message: 'OK',
     }
  
@@ -80,14 +80,14 @@ export function usuarioResponsable(formResponsable) {
         return MESSAGE_RESPONSE;
     }
     else {
-        VALIDATION_RESULT.isValid = true;
+        VALIDATION_RESULT.success = true;
         return MESSAGE_RESPONSE;
     }
 }
 
 export function usuarioAtletaJunior(formAtletaJunior) {
     const VALIDATION_RESULT = {
-        isValid: false,
+        success: false,
         message: 'OK',
     }
  
@@ -106,7 +106,7 @@ export function usuarioAtletaJunior(formAtletaJunior) {
         return VALIDATION_RESULT;
     }
     else {
-        VALIDATION_RESULT.isValid = true;
+        VALIDATION_RESULT.success = true;
         return MESSAGE_RESPONSE;
     }
 }

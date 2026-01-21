@@ -8,9 +8,9 @@ import cors from 'cors';
 
 // API Routes 
 import { authApp } from './src/routes/auth.route.js';
-import { adminSearchApp } from './src/routes/admin/admin-search.route.js';
 import { adminUsersApp } from './src/routes/admin/admin-users.route.js';
-
+import { adminSearchApp } from './src/routes/admin/admin-search.route.js';
+import { userAccountApp } from './src/routes/user/user.route.js';
 
 var app = express();
 
@@ -37,8 +37,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/gym-365/auth', authApp);
+app.use('/gym-365/user', userAccountApp);
 app.use('/gym-365-mgmt/admin', adminUsersApp);
-app.use('/gym-365/user', adminSearchApp);
+app.use('/gym-365-mgmt/admin', adminSearchApp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

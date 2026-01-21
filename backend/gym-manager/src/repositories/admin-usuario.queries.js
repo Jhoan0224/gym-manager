@@ -1,4 +1,25 @@
 
+export const FIND_USUARIO_BY_EMAIL = `
+    SELECT usr.id_usuario, usr.nombre, usr.apellido, usr.email, p.nombre as plan
+    FROM usuario usr
+    JOIN plan p 
+        on p.id_plan = usr.id_plan 
+    WHERE usr.email = ?
+`;
+export const FIND_USUARIO_BY_NAMES = `
+    SELECT usr.id_usuario, usr.nombre, usr.apellido, usr.email, p.nombre as plan
+    FROM usuario usr
+    JOIN plan p 
+        on p.id_plan = usr.id_plan 
+    WHERE usr.nombre = ? AND usr.apellido = ?
+`;
+export const FIND_USUARIO_BY_ID = `
+    SELECT usr.id_usuario, usr.nombre, usr.apellido, usr.email, p.nombre as plan
+    FROM usuario usr
+    JOIN plan p 
+        on p.id_plan = usr.id_plan 
+    WHERE usr.id_usuario = ?
+`;
 
 export const ADD_USUARIO_ATLETA = `
     INSERT INTO
