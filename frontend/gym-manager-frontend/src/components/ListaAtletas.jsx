@@ -1,11 +1,11 @@
 
- export function ListaAtletas({listaAtletas}){
+
+ export function ListaAtletas({listaAtletas, getPerfilUsuario}){
 
     return(
     <>
     <div className="w-100">
         <h5 className="fs-6">Atletas Encontrados:</h5>
-
         <table className="table table-hover table-striped mx-4">
             <thead className="">
                 <tr>
@@ -14,18 +14,22 @@
                     <th>Apellido</th>
                     <th>Correo</th>
                     <th>Plan Seleccionado</th>
-                    <th className="text-center">Atleta-Perfil</th>
+                    <th>Atleta-Perfil</th>
                 </tr>
             </thead>
             <tbody>
                 {listaAtletas.map(atleta => (
-                    <tr key={atleta.id}>
-                        <td>{atleta.id}</td>
+                    <tr key={atleta.id_usuario}>
+                        <td>{atleta.id_usuario}</td>
                         <td>{atleta.nombre}</td>
                         <td>{atleta.apellido}</td>
-                        <td>{atleta.correo}</td>
-                        <td>{atleta.plan_seleccionado}</td>
-                        <td className="text-center"><button className="btn btn-primary">Ver Perfil</button></td>
+                        <td>{atleta.email}</td>
+                        <td>{atleta.id_plan}</td>
+                        <td>
+                            <button type="button" onClick={() => getPerfilUsuario(atleta.id_usuario)} className="btn btn-primary">
+                                Ver Perfil
+                            </button>
+                        </td>
                     </tr>
                 ))}
             </tbody>
@@ -36,7 +40,7 @@
     )
 }
 
-const listaAtletas = [
+const listaAtletas2 = [
   {
     "id": 1,
     "nombre": "Carlos",
@@ -57,19 +61,5 @@ const listaAtletas = [
     "apellido": "Ortiz",
     "correo": "sebastian.fit@email.com",
     "plan_seleccionado": "The Hustle"
-  },
-  {
-    "id": 4,
-    "nombre": "Camila",
-    "apellido": "Vega",
-    "correo": "camivega@email.com",
-    "plan_seleccionado": "Titanio"
-  },
-  {
-    "id": 5,
-    "nombre": "Julián",
-    "apellido": "Castro",
-    "correo": "j.castro99@email.com",
-    "plan_seleccionado": "All-In Access"
   }
 ]

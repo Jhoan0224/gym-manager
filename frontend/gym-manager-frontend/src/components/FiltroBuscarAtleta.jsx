@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { getListaAtletas } from "../api/AdminApi";
+import { findUserById, findUserByEmail, findUserByNames } from "../api/admin-usuarios";
+import { ToastMessage } from "./ToastMessage";
 
+const TIPO_BUSQUEDA = {
+    NOMBRE_APELLIDO: 1, EMAIL: 2, ID: 3 
+}
+    
 
 export function FiltrosBuscarAtleta({setListaAtletas}){
-    const [filtroSelected, setFiltroSelected] = useState("F1");
+    const [filtroSelected, setFiltroSelected] = useState(TIPO_BUSQUEDA.NOMBRE_APELLIDO);
     const [formBuscarAtleta, setFormBuscarAtleta] = useState({
         nombre: '', //F1
         apellido: '', //F1
         email: '', //F2
-        idAtleta: '' //F3
+        idUsuario: '' //F3
     });
 
-    const sendFormBuscarAtleta = (event) => {
-        const atletas = getListaAtletas().then(console.log);
-    }
+    const sendFormBuscarAtleta = {
+        [TIPO_BUSQUEDA.NOMBRE_APELLIDO]: () => findUserByNames(formBuscarAtleta.nombre, formBuscarAtleta.apellido).then(data => setListaAtletas(data.data)),
+        [TIPO_BUSQUEDA.EMAIL]: () => findUserByEmail(formBuscarAtleta.email).then(data => setListaAtletas(data.data)),
+        [TIPO_BUSQUEDA.ID]: () => findUserById(formBuscarAtleta.idUsuario).then(data => setListaAtletas(data.data))
+    };
 
     return(
     <>
@@ -22,13 +29,22 @@ export function FiltrosBuscarAtleta({setListaAtletas}){
         <div>
             <div className="row m-2">
 
+                {/* <div className="col-auto mt-auto mb-0">
+                    <label htmlFor="filtro" className="form-label"> Tipo de Usuario:</label>
+                    <select name="tipoBusqueda" id="buscarAtleta" defaultValue={TIPO_BUSQUEDA.NOMBRE_APELLIDO} className="form-select"
+                        >
+                        <option value={TIPO_BUSQUEDA.ATLETA}>Atleta</option>
+                        <option value={TIPO_BUSQUEDA.RESPONSABLE}>Responsable</option>
+                        <option value={TIPO_BUSQUEDA.ATLETA_JUNIOR}>Atleta Jr</option>
+                    </select>
+                </div> */}
                 <div className="col-auto mt-auto mb-0">
-                    <label htmlFor="filtro" className="form-label"> Filtros</label>
-                    <select name="buscarAtleta" id="buscarAtleta" defaultValue="F1" className="form-select"
+                    <label htmlFor="filtro" className="form-label"> Buscar por:</label>
+                    <select name="buscarAtleta" id="buscarAtleta" defaultValue={TIPO_BUSQUEDA.NOMBRE_APELLIDO} className="form-select"
                         onChange={(e) => setFiltroSelected(e.target.value)} >
-                        <option value="F1">Nombre y Apellido</option>
-                        <option value="F2">Email de Atleta</option>
-                        <option value="F3">ID de Atleta</option>
+                        <option value={TIPO_BUSQUEDA.NOMBRE_APELLIDO}>Nombre y Apellido</option>
+                        <option value={TIPO_BUSQUEDA.EMAIL}>Email de Atleta</option>
+                        <option value={TIPO_BUSQUEDA.ID}>ID de Atleta</option>
                     </select>
                 </div>
 
@@ -36,13 +52,13 @@ export function FiltrosBuscarAtleta({setListaAtletas}){
                     {
                         // renderizado utilizando literal objects
                         ({
-                            'F1': <BuscarAtletaF1 setFormBuscarAtleta={setFormBuscarAtleta} />,
-                            'F2': <BuscarAtletaF2 setFormBuscarAtleta={setFormBuscarAtleta} />,
-                            'F3': <BuscarAtletaF3 setFormBuscarAtleta={setFormBuscarAtleta} />
+                            [TIPO_BUSQUEDA.NOMBRE_APELLIDO]: <BuscarAtletaF1 formBuscarAtleta={formBuscarAtleta} setFormBuscarAtleta={setFormBuscarAtleta} />,
+                            [TIPO_BUSQUEDA.EMAIL]: <BuscarAtletaF2 formBuscarAtleta={formBuscarAtleta} setFormBuscarAtleta={setFormBuscarAtleta} />,
+                            [TIPO_BUSQUEDA.ID]: <BuscarAtletaF3 formBuscarAtleta={formBuscarAtleta} setFormBuscarAtleta={setFormBuscarAtleta} />
                         })[filtroSelected]
                     }
                     <div className="mt-auto mb-0">
-                        <button type="button" onClick={(event) => sendFormBuscarAtleta(event)} className="btn btn-primary px-2"><i className="bi bi-search me-2"></i>
+                        <button type="button" onClick={() => sendFormBuscarAtleta[filtroSelected]()} className="btn btn-primary px-2"><i className="bi bi-search me-2"></i>
                             Buscar
                         </button>
                     </div>
@@ -55,15 +71,15 @@ export function FiltrosBuscarAtleta({setListaAtletas}){
     )
 
 }
- function BuscarAtletaF3({setFormBuscarAtleta}) {
+ function BuscarAtletaF3({formBuscarAtleta, setFormBuscarAtleta}) {
     return(
     <>
     <div className="d-flex gap-3">
         <div>
-            <label htmlFor="idAtleta" className="form-label">ID de Atleta</label>
-            <input type="text" name="idAtleta" id="idAtleta" className="form-control"
-                value={setFormBuscarAtleta.idAtleta}
-                onChange={(e) => setFormBuscarAtleta({...setFormBuscarAtleta, [e.target.name]: e.target.value})}
+            <label htmlFor="idUsuario" className="form-label">ID de Atleta</label>
+            <input type="text" name="idUsuario" id="idUsuario" className="form-control"
+                value={formBuscarAtleta.idUsuario}
+                onChange={(e) => setFormBuscarAtleta({...formBuscarAtleta, [e.target.name]: e.target.value})}
 
             />
         </div>
@@ -72,7 +88,7 @@ export function FiltrosBuscarAtleta({setListaAtletas}){
     )
  }
 
-function BuscarAtletaF2({setFormBuscarAtleta}) {
+function BuscarAtletaF2({formBuscarAtleta, setFormBuscarAtleta}) {
 
     return(
     <>
@@ -80,8 +96,8 @@ function BuscarAtletaF2({setFormBuscarAtleta}) {
         <div>
             <label htmlFor="email" className="form-label">Email</label>
             <input type="email" name="email" id="email" className="form-control"
-                value={setFormBuscarAtleta.email}
-                onChange={(e) => setFormBuscarAtleta({...setFormBuscarAtleta, [e.target.name]: e.target.value})}
+                value={formBuscarAtleta.email}
+                onChange={(e) => setFormBuscarAtleta({...formBuscarAtleta, [e.target.name]: e.target.value})}
             />
         </div>
     </div>  
@@ -89,7 +105,7 @@ function BuscarAtletaF2({setFormBuscarAtleta}) {
     )
 }
 
-function BuscarAtletaF1({setFormBuscarAtleta}) {
+function BuscarAtletaF1({ formBuscarAtleta, setFormBuscarAtleta}) {
     
     return(
     <>
@@ -97,15 +113,15 @@ function BuscarAtletaF1({setFormBuscarAtleta}) {
         <div>
             <label htmlFor="nombre" className="form-label">Nombre</label>
             <input type="text" name="nombre" id="nombre" className="form-control"
-                value={setFormBuscarAtleta.nombre}
-                onChange={(e) => setFormBuscarAtleta({...setFormBuscarAtleta, [e.target.name]: e.target.value})}
+                value={formBuscarAtleta.nombre}
+                onChange={(e) => setFormBuscarAtleta({...formBuscarAtleta, [e.target.name]: e.target.value})}
             />
         </div>
         <div>
             <label htmlFor="apellido" className="form-label">Apellido</label>
-            <input type="text" name="apellido" id="nombre" className="form-control"
-                value={setFormBuscarAtleta.apellido}
-                onChange={(e) => setFormBuscarAtleta({...setFormBuscarAtleta, [e.target.name]: e.target.value})}
+            <input type="text" name="apellido" id="apellido" className="form-control"
+                value={formBuscarAtleta.apellido}
+                onChange={(e) => setFormBuscarAtleta({...formBuscarAtleta, [e.target.name]: e.target.value})}
 
             />
         </div>
