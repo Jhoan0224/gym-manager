@@ -1,5 +1,23 @@
 
+export const FIND_ADMIN_BY_ID = `
+    SELECT admin.id_admin AS idAdmin
+    FROM admin
+    WHERE admin.email
+    LIMIT 1
+`;
+
+
 // Admin quieries
+export const ID_SUPER_ADMIN_BY_LOGIN = `
+    SELECT spadmin.id_super_admin AS idAdmin
+    FROM
+        super_admin spadmin
+    WHERE
+        spadmin.email = ? AND spadmin.pass = ?
+    LIMIT 1
+`; 
+
+
 export const ID_ADMIN_BY_LOGIN = `
     SELECT admin.id_admin AS idAdmin
     FROM admin

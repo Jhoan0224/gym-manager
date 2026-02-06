@@ -90,3 +90,9 @@ export const FIND_USER_DUI = `
     LIMIT 1
 `;
 
+export const FIND_USER_BY_EMAIL_DUI = `
+    SELECT usr.id_usuario as idUsuario
+    FROM usuario usr
+    WHERE usr.email = ? AND usr.dui = ?
+    LIMIT 1
+`;

@@ -1,4 +1,4 @@
-import { SERVER_ERROR } from "../../utils/message-response.js";
+import { BAD_REQUEST, SERVER_ERROR } from "../../utils/message-response.js";
 import * as adminUsuariosSvc from '../../services/admin/user-atleta-svc.js';
 
 export const findUsuarioaByIdUsuario = async (req, res) => {
@@ -40,15 +40,16 @@ export const findUsuarioByNames = async (req, res) => {
     try {
         const {nombre, apellido} = req.params;
         
-        const datosObtenidos = await adminUsuariosSvc.findUsuarioByNames(nombre.trim(), apellido.trim());
+        if (!nombre && !apellido) { return res.status(400).json(BAD_REQUEST); }
+        const datosObtenidos = await adminUsuariosSvc.findUsuarioByNames(nombre, apellido);
         if (datosObtenidos.success === true) {
-            res.status(200).json(datosObtenidos);
+            return res.status(200).json(datosObtenidos);
         } else {
-            res.status(404).json(datosObtenidos);
+            return res.status(404).json(datosObtenidos);
         }
     } catch (error) {
         console.error('ERROE EN CONTROLLER BUSCAR ATLETA POR NOMBRES ', error)
-        res.status(500).json(SERVER_ERROR);
+        return res.status(500).json(SERVER_ERROR);
     }
 }
 

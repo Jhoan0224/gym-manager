@@ -6,7 +6,7 @@ const adminSearchApp = express.Router();
 adminSearchApp.use(express.json());
 
 
-adminSearchApp.get('/find-usuario/nombre/:nombre/apellido/:apellido',
+adminSearchApp.get('/find-usuario/nombre/:nombre?/apellido/:apellido?',
     // authProcess,
     AdminSearchCtrl.findUsuarioByNames
 )

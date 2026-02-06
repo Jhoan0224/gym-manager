@@ -6,7 +6,7 @@ export async function mysqlConnection() {
     //     host: 'localhost',
     //     port: 3306,
     //     user: 'root',
-    //     password: 'my20',
+    //     password: '',
     //     database: 'gym_manager_db'
     // });
 }
@@ -15,7 +15,7 @@ export const mysqlPoolConnect = mysql2.createPool({
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'my20',
+    password: '',
     database: 'gym_manager_db'
 });
 

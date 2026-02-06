@@ -33,6 +33,12 @@ adminUsersApp.post('/add-atleta-junior',
     validations.formAtletaJunior,
     AdminUsersCtrl.addAtletaJunior
 )
+
+adminUsersApp.post('/pago-user-local',
+    authProcess,
+    validations.formPagoUserLocal,
+    AdminUsersCtrl.realizarPagoUserSuscripcionLocal
+);
 // pendientes delete userr by id y update user by id
 
 export {adminUsersApp};

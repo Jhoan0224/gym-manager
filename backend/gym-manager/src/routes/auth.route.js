@@ -5,6 +5,11 @@ import * as authCtrl from '../controllers/auth.controller.js'
 const authApp = express.Router();
 authApp.use(express.json());
 
+authApp.post('/sp-admin/login',
+    authProcess.getAuthFormCheck,
+    authCtrl.getSuperAdminJWT
+);
+
 authApp.post('/admin/login',
     authProcess.getAuthFormCheck,
     authCtrl.getAdminJWT
@@ -21,6 +26,10 @@ authApp.get('/user-validar-token',
 
 authApp.get('/admin-validar-token',
     authCtrl.validateTokenAdmin
+)
+
+authApp.get('/sp-admin-validar-token',
+    authCtrl.validateTokenSuperAdmin
 )
 
 authApp.post('/user/verify-profile', async (req, res) => {

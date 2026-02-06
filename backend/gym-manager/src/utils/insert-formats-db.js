@@ -18,7 +18,8 @@ export function usuarioAtleta(formAtleta) {
     dbFormAtleta.dui = formAtleta.dui;
     dbFormAtleta.telefono = '';
     dbFormAtleta.email = formAtleta.email;
-    dbFormAtleta.pass_hash = formAtleta.pass_hash
+    dbFormAtleta.pass_hash = '123';
+    // dbFormAtleta.pass_hash = formAtleta.pass_hash;
     dbFormAtleta.id_tipo_usuario = ID_TIPO_USUARIO.ATLETA;
     dbFormAtleta.id_plan = formAtleta.idPlan;
 

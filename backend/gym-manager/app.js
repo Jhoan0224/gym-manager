@@ -11,6 +11,8 @@ import { authApp } from './src/routes/auth.route.js';
 import { adminUsersApp } from './src/routes/admin/admin-users.route.js';
 import { adminSearchApp } from './src/routes/admin/admin-search.route.js';
 import { userAccountApp } from './src/routes/user/user.route.js';
+import { publicApp } from './src/routes/public.route.js';
+import { superAdminApp } from './src/routes/super_admin/super-admin.route.js';
 
 var app = express();
 
@@ -36,10 +38,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());  
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/gym-365-public/api', publicApp);
 app.use('/gym-365/auth', authApp);
 app.use('/gym-365/user', userAccountApp);
-app.use('/gym-365-mgmt/admin', adminUsersApp);
-app.use('/gym-365-mgmt/admin', adminSearchApp);
+app.use('/gym-365-admin/admin', adminUsersApp);
+app.use('/gym-365-admin/admin', adminSearchApp);
+app.use('/gym-365-admin/sp-admin', superAdminApp);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

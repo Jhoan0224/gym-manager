@@ -20,6 +20,104 @@ export async function validarToken(token) {
     RESULT_PROCESS.message = 'El Token es valido';
     
     return RESULT_PROCESS;
+};
+
+export async function generarTokenSuperAdmin(formLoginAdmin) {
+    const RESULT_PROCESS = {
+        success: false,
+        message: 'El Email o la Contrasena no son validos',
+        idUsuario: '',
+        token: ''
+    }
+    const conn = await mysqlPoolConnect.getConnection();
+    try {
+        const loginValues = [formLoginAdmin.email, formLoginAdmin.pass];
+        // buscamos el id del usuario relacionado al pass y email
+        const [result] = await conn.execute(securityQuery.ID_SUPER_ADMIN_BY_LOGIN ,loginValues);
+
+        const idAdmin = result[0]?.idAdmin ?? null;
+        // verificacion 1
+        if (idAdmin === null) {
+            return RESULT_PROCESS;
+        }
+        // continuacion 1
+    /*
+        // obtenemos los roles basado en el ID del Admin
+        const [rolesAdmin] = await conn.execute(securityQuery.ADMIN_ROLES_BY_ID_ADMIN, [idAdmin]);
+
+        // validacion 2
+        // verificar que si existan resultados
+        if (rolesAdmin.length === 0) {
+            return RESULT_PROCESS;
+        }
+        //continuacion 2
+    */
+        // procedemos a generar el JWT
+        const payloadToken = {
+            idUser: idAdmin,
+            roles: ['SUPER']
+        }
+        
+        RESULT_PROCESS.success = true;
+        RESULT_PROCESS.message = 'Verificacion exitosa';
+        RESULT_PROCESS.idUsuario = idAdmin;
+        RESULT_PROCESS.token = generateJWT(payloadToken);
+        
+        return RESULT_PROCESS;
+
+    } catch (error) {
+        throw error;
+    } finally {
+        if (conn) conn.release();
+    }
+};
+
+export async function generarTokenAdmin(formLoginAdmin) {
+    const RESULT_PROCESS = {
+        success: false,
+        message: 'El Email o la Contrasena no son validos',
+        idUsuario: '',
+        token: ''
+    }
+    const conn = await mysqlPoolConnect.getConnection();
+    try {
+        const loginValues = [formLoginAdmin.email, formLoginAdmin.pass];
+        // buscamos el id del usuario relacionado al pass y email
+        const [result] = await conn.execute(securityQuery.ID_ADMIN_BY_LOGIN ,loginValues);
+
+        const idAdmin = result[0]?.idAdmin ?? null;
+        // verificacion 1
+        if (idAdmin === null) {
+            return RESULT_PROCESS;
+        }
+        // continuacion 1
+        // obtenemos los roles basado en el ID del Admin
+        const [rolesAdmin] = await conn.execute(securityQuery.ADMIN_ROLES_BY_ID_ADMIN, [idAdmin]);
+
+        // validacion 2
+        // verificar que si existan resultados
+        if (rolesAdmin.length === 0) {
+            return RESULT_PROCESS;
+        }
+        //continuacion 2
+
+        // procedemos a generar el JWT
+        const payloadToken = {
+            idUser: idAdmin,
+            roles: rolesAdmin.map(row => row.rol)
+        }
+        RESULT_PROCESS.success = true;
+        RESULT_PROCESS.message = 'Verificacion exitosa';
+        RESULT_PROCESS.idUsuario = idAdmin;
+        RESULT_PROCESS.token = generateJWT(payloadToken);
+        
+        return RESULT_PROCESS;
+
+    } catch (error) {
+        throw error;
+    } finally {
+        if (conn) conn.release();
+    }
 }
 
 export async function generarTokenUser(formLoginUser) {
@@ -72,52 +170,4 @@ export async function generarTokenUser(formLoginUser) {
     } finally {
         if (conn) conn.release();
     }
-} 
-
-export async function generarTokenAdmin(formLoginAdmin) {
-    const RESULT_PROCESS = {
-        success: false,
-        message: 'El Email o la Contrasena no son validos',
-        idUsuario: '',
-        token: ''
-    }
-    const conn = await mysqlPoolConnect.getConnection();
-    try {
-        const loginValues = [formLoginAdmin.email, formLoginAdmin.pass];
-        // buscamos el id del usuario relacionado al pass y email
-        const [result] = await conn.execute(securityQuery.ID_ADMIN_BY_LOGIN ,loginValues);
-
-        const idAdmin = result[0]?.idAdmin ?? null;
-        // verificacion 1
-        if (idAdmin === null) {
-            return RESULT_PROCESS;
-        }
-        // continuacion 1
-        // obtenemos los roles basado en el ID del Admin
-        const [rolesAdmin] = await conn.execute(securityQuery.ADMIN_ROLES_BY_ID_ADMIN, [idAdmin]);
-
-        // validacion 2
-        // verificar que si existan resultados
-        if (rolesAdmin.length === 0) {
-            return RESULT_PROCESS;
-        }
-        //continuacion 2
-
-        // procedemos a generar el JWT
-        const payloadToken = {
-            idUser: idAdmin,
-            roles: rolesAdmin.map(row => row.rol)
-        }
-        RESULT_PROCESS.success = true;
-        RESULT_PROCESS.message = 'Verificacion exitosa';
-        RESULT_PROCESS.idUsuario = idAdmin;
-        RESULT_PROCESS.token = generateJWT(payloadToken);
-        
-        return RESULT_PROCESS;
-
-    } catch (error) {
-        throw error;
-    } finally {
-        if (conn) conn.release();
-    }
-} 
+};

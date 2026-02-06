@@ -35,10 +35,10 @@ export function usuarioAtleta(formAtleta) {
         VALIDATION_RESULT.message = 'El formato del DUI proporcionado no es valido';
         return VALIDATION_RESULT;
     }
-    if (telefonoIsValido(formAtleta.telefono) === false) {
-        VALIDATION_RESULT.message = 'El Telefono proporcionado no es valido';
-        return VALIDATION_RESULT;
-    }
+    // if (telefonoIsValido(formAtleta.telefono) === false) {
+    //     VALIDATION_RESULT.message = 'El Telefono proporcionado no es valido';
+    //     return VALIDATION_RESULT;
+    // }
     else {
         VALIDATION_RESULT.success = true;
         return VALIDATION_RESULT;
@@ -68,20 +68,20 @@ export function usuarioResponsable(formResponsable) {
     // THE PASSWORD IS NOT VERIFY HERE 
 
     if(emailIsValid(formResponsable.email) === false) {
-        message = 'El formato del Email proporcionado no es valido';
-        return message;
+        VALIDATION_RESULT.message = 'El formato del Email proporcionado no es valido';
+        return VALIDATION_RESULT;
     }
     if (duiIsValid(formResponsable.dui) === false) {
-        message = 'El formato del DUI proporcionado no es valido';
-        return message;
+        VALIDATION_RESULT.message = 'El formato del DUI proporcionado no es valido';
+        return VALIDATION_RESULT;
     }
-    if (telefonoIsValido(formResponsable.telefono) === false) {
-        message = 'El Telefono proporcionado no es valido';
-        return MESSAGE_RESPONSE;
-    }
+    // if (telefonoIsValido(formResponsable.telefono) === false) {
+    //     VALIDATION_RESULT.message = 'El Telefono proporcionado no es valido';
+    //     return VALIDATION_RESULT;
+    // }
     else {
         VALIDATION_RESULT.success = true;
-        return MESSAGE_RESPONSE;
+        return VALIDATION_RESULT;
     }
 }
 
@@ -109,4 +109,31 @@ export function usuarioAtletaJunior(formAtletaJunior) {
         VALIDATION_RESULT.success = true;
         return MESSAGE_RESPONSE;
     }
+}
+
+export function pagoUsuarioLocal(formPagoUserLocal) {
+    const VALIDATION_RESULT = {
+        success: false,
+        message: 'OK',
+    }
+    
+
+    if (emailIsValid(formPagoUserLocal.email) === false) {
+        VALIDATION_RESULT.message = 'El formato del Email no es valido';
+        return VALIDATION_RESULT;
+    }
+
+    // valida si la edad del atleta es mayor a 18 es true sino false
+    // Atleta Junior debe tener edad menor a 18, entonces si es true no es valido
+    if (duiIsValid(formPagoUserLocal.dui) === true) {
+        VALIDATION_RESULT.message = 'El formato del DUI no es valido';
+        return VALIDATION_RESULT;
+    }
+
+    /*
+        FALTAN VALIDACIONES PARA ID DE LA SUSCRIPCION QUE DEBA SER UN NUMERO MAYOR A 0 Y DEBE SER ENTERO
+    */
+
+    VALIDATION_RESULT.success = true;
+    return MESSAGE_RESPONSE;
 }

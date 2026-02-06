@@ -11,7 +11,7 @@ export const FIND_USUARIO_BY_NAMES = `
     FROM usuario usr
     JOIN plan p 
         on p.id_plan = usr.id_plan 
-    WHERE usr.nombre = ? AND usr.apellido = ?
+    WHERE usr.nombre = ? OR usr.apellido = ?
 `;
 export const FIND_USUARIO_BY_ID = `
     SELECT usr.id_usuario, usr.nombre, usr.apellido, usr.email, p.nombre as plan
