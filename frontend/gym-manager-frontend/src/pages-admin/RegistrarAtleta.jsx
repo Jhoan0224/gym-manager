@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { FormRegistrarAtleta, FormRegistrarResponsable, FormRegistrarAtletaJunior } from "../components/FormRegistrarAtleta";
-import { registerAtleta , registerResponsable, registerAtletaJunior } from "../api/admin-usuarios.js";
+import { registerAtleta , registerResponsable, registerAtletaJunior } from "../api/admin-usuarios.api.js";
 
 
 export const OPCIONES_REGISTRO = {

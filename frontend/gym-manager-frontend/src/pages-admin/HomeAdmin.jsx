@@ -39,7 +39,15 @@ export default function HomeAdmin() {
         </div>
         <div className="row justify-content-center w-100 my-4">
             <div className="col-auto">
-                    <div className="border border-danger rounded-2 p-2 text-center" style={{width: '15rem'}}>
+                <div className="border border-warning rounded-2 p-2 text-center" style={{width: '15rem'}}>
+                    <i className="bi bi-wallet fs-2"></i>
+                    <div>
+                        <button type="button" onClick={() => navigate('/gym-365/admin/usuario-pago-suscripcion')} className="btn btn-outline-warning">Pago de Suscripción</button>
+                    </div>
+                </div>
+            </div>
+            <div className="col-auto">
+                <div className="border border-danger rounded-2 p-2 text-center" style={{width: '15rem'}}>
                     <i className="bi bi-shield-lock fs-2"></i>
                     <div>
                         <button type="button" onClick={() => navigate('/gym-365/admin/acceso-manual')} className="btn btn-outline-danger">Acesso Manual</button>

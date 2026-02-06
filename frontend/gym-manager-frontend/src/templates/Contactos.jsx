@@ -23,7 +23,7 @@ export function Contactos() {
             </div>
         </div>
         <hr className="border border-secondary border-2 w-100" />
-        <div className="d-flex gap-4 p-3">
+        <div className="d-flex gap-4 p-3" id="atencion-cliente">
             <div className="text-center my-auto">
                 <i className="bi bi-chat-dots fs-2"></i>
                 <h5 className="fs-6">Atencion al Cliente</h5>

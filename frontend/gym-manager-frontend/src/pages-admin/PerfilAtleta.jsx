@@ -6,9 +6,6 @@ export function PerfilAtletaAdmin() {
     // access to state of this path or url
     console.log(location.state)
     const idUsuario = location.state?.idUsuario ?? ''; // varibles de state
-
-    
-
     return (
     <>
         <PerfilAtletaData idUsuario={idUsuario} />

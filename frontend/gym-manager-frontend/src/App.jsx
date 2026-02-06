@@ -2,7 +2,7 @@ import {BrowserRouter, Routes, Route, Outlet} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { NavbarWebsite, NavbarUser, NavbarAdmin } from './templates/Navbar'
 import { FooterWebsite, FooterUser, FooterAdmin } from './templates/Footer'
-import {LoginAdmin, LoginUser} from './templates/Login'
+import {LoginAdmin, LoginSuperAdmin, LoginUser} from './templates/Login'
 import { Contactos } from './templates/Contactos'
 import HomeAdmin from './pages-admin/HomeAdmin'
 import { AtletasAdmin } from './pages-admin/AtletasAdmin'
@@ -14,17 +14,28 @@ import CuentaUser from './pages-user/CuentaUser'
 import PlanEntrenoUser from './pages-user/PlanEntrenoUser'
 import EntrenosUser from './pages-user/EntrenosUser'
 import HomeWebsite from './pages-website/HomeWebsite'
-import { validarAdminAuthToken, validarUserAuthToken } from './api/auth.js'
+import { validarAdminAuthToken, validarSuperAdminAuthToken, validarUserAuthToken } from './api/auth.js'
+import { PagoUserLocal } from './components/PagoUserLocal.jsx'
+import HomeSuperAdmin from './pages-superadmin/HomeSuperAdmin.jsx'
+import { ConfigureAdmins } from './pages-superadmin/ConfigureAdmins.jsx'
+import { ListaAdmins } from './components/ListaAdmins.jsx'
+import { FormAddAdmin, PerfilAdminConfig } from './components/FormAddAdmin.jsx'
+import { PlanesOfertasAdmin } from './pages-superadmin/PlanesOfertasAdmin.jsx'
+import { AddOferta, AddPlan, ConfigureOfertaComp, ConfigurePlanComp, ListaPlanes, PlanesOfertasComp } from './components/PlanesOfertasComp.jsx'
+import GraphicsGym from './pages-superadmin/GraphicsGym.jsx'
+import { LoadingSpiner } from './templates/LoadingTmpl.jsx'
 
 
 function App() {
   return (
     <>
     <BrowserRouter>
-        <Routes>
+        <Routes path="">
             {/* Website routes */}
             <Route path='/' element={<RenderWebsite />}>
                 <Route index element={<HomeWebsite />} />
+                <Route path='contactos' element={<Contactos />} />
+
             </Route>
 
             {/* Admin routes */}
@@ -38,6 +49,7 @@ function App() {
                     <Route path='registrar-atleta' element={<RegistrarAtleta />} />
                     <Route path='perfil-atleta' element={<PerfilAtletaAdmin />} />
                     <Route path='acceso-manual' element={<AccesoManual />} />             
+                    <Route path='usuario-pago-suscripcion' element={<PagoUserLocal />} />             
                 </Route>
             </Route>
 
@@ -52,27 +64,41 @@ function App() {
                     <Route path='suscripcion' element={<PlanEntrenoUser />} />
                 </Route>
             </Route>
+
+
+            <Route path='gym-365/super-admin/login' element={<LoginSuperAdmin />}/>
+
+            <Route path='gym-365/super-admin' element={<RenderSuperAdmin />}>
+                
+                <Route index element={<HomeSuperAdmin />} />
+                <Route path='home' element={<HomeSuperAdmin />} />
+
+                <Route path='configure-admins' element={<ConfigureAdmins /> }>
+                    <Route index element={<ListaAdmins />} />
+                    <Route path='lista-admins' element={<ListaAdmins />} />
+                    <Route path='add-admin' element={<FormAddAdmin />} />
+                    <Route path='cuenta-admin/:idAdmin' element={<PerfilAdminConfig />} />
+                </Route>
+                <Route path='planes-ofertas' element={<PlanesOfertasAdmin />}>
+                    <Route index element={<PlanesOfertasComp />}/>
+                    <Route path='add-plan' element={<AddPlan />} />
+                    <Route path='add-oferta' element={<AddOferta />} />
+                    <Route path='config-plan/:idPlan' element={<ConfigurePlanComp />} />
+                    <Route path='config-oferta/:idOferta' element={<ConfigureOfertaComp />} />
+                    </Route>
+                <Route path='graphics' element={<GraphicsGym />} />
+
+            </Route>
+
+            <Route path='/spiner' element={<LoadingSpiner />} />
+
         </Routes>    
     </BrowserRouter>
     </>
   )
 }
 
-async function validateAuth() {
-     return true;
-    const tokenAuth = localStorage.getItem(import.meta.env.VITE_NAME_TOKEN_AUTH);
-    
-    if (tokenAuth === undefined || tokenAuth === null || tokenAuth === '') {
-        return false;
-    }
-    const tokenIsValid = await validarAdminAuthToken();
-    if (tokenIsValid.success === true) {
-        return true;
-    } else {
-        alert(tokenIsValid.message)
-        return false;
-    }
-}
+
 
 function RenderWebsite() {
     return(
@@ -86,14 +112,49 @@ function RenderWebsite() {
     )
 }
 
+function RenderSuperAdmin() {
+    const [authIsValid, setAuthIsValid] = useState(null);
+    
+    useEffect(() => {
+        const checkAuth = async () => {
+            const checkResult = await validarSuperAdminAuthToken();
+            setAuthIsValid(checkResult.success);
+            if (!checkResult.success) {
+                alert(checkResult.message);
+            };
+        };
+        checkAuth();
+    },[]);
+
+    if (authIsValid === null) {
+        return <LoadingSpiner /> 
+    }
+    if (authIsValid === true) {
+        return(
+        <>
+            <NavbarAdmin />
+            <div className='d-flex flex-grow-1 container py-2'>
+                <Outlet />
+            </div>
+            <FooterAdmin />
+        </>
+        )
+    } else {
+        return <LoginSuperAdmin />   
+    }
+} 
+
 function RenderUserAccount() {
     const [authIsValid, setAuthIsValid] = useState(null);
     
     useEffect(() => {
         const checkAuth = async () => {
             const checkResult = await validarUserAuthToken();
-            console.log("DEBUG CHECK TOKEN USER >> ", checkResult)
-            checkResult.success === true ? setAuthIsValid(true) : setAuthIsValid(false), alert(checkResult.message);
+            setAuthIsValid(checkResult.success);
+
+            if (checkResult.success === false) {
+                alert(checkResult.message);
+            }
         };
         checkAuth();
     },[]);
@@ -121,8 +182,12 @@ function RenderAdmin() {
     
     useEffect(() => {
         const checkAuth = async () => {
-            const result = await validateAuth();
-            setAuthIsValid(result);
+            const checkResult = await validarAdminAuthToken();
+            setAuthIsValid(checkResult.success);
+
+            if (!checkResult.success) {
+                alert(checkResult.message);
+            };
         };
         checkAuth();
     },[]);

@@ -115,3 +115,20 @@ s
         return PROCESS_RESULT;
     }
 }
+
+export async function realizarPagoUserLocal(formPago) {
+    const PROCESS_RESULT = {
+        success: false,
+        message: 'Ocurrio un error al realizar la peticion al Servidor',
+        data: {}
+    }
+    try {
+        const resp = await axios.post(`${API_ADMIN_USUARIOS}/pago-user-local`, formPago, GET_ADMIN_HEADERS());
+        return resp.data;
+s   
+    } catch (error) {
+        console.log('Error Pago Local call api :>> ', error);
+        return PROCESS_RESULT;
+    }
+}
+

@@ -2,8 +2,9 @@ import axios from "axios";
 import { GET_CURRENT_ID_USER, GET_USER_HEADERS } from "./auth.js";
 
 const API_USUARIO_ACCOUNT = import.meta.env.VITE_API_USER_DOMAIN;
+const API_ADMIN_USER = import.meta.env.VITE_API_ADMIN_DOMAIN;
 
-export async function getPerfilUsuario() {
+export async function getPerfilUsuario(idUsuario) {
     const PROCESS_RESULT = {
         success: false,
         message: 'Ocurrio un error al realizar la peticion',
@@ -11,8 +12,7 @@ export async function getPerfilUsuario() {
     }
     try {
 
-        const idUsuario = GET_CURRENT_ID_USER();
-        const resp = await axios.get(`${API_USUARIO_ACCOUNT}/perfil-usuario/id/${idUsuario}`, GET_USER_HEADERS());
+        const resp = await axios.get(`${API_ADMIN_USER}/perfil-usuario/id/${idUsuario}`, GET_USER_HEADERS());
         return resp.data;
 
     } catch (error) {

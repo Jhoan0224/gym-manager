@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { getPerfilUsuario, getSuscripcionUserData } from "../api/usuario-account.api"
+import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 
-
-export function PerfilAtletaData() {
+export function PerfilAtletaData(idUsuario) {
     const [perfilUsuario, setPerfilUsuario] = useState({
         id_usuario: 1,
         nombre: "",
@@ -15,20 +16,18 @@ export function PerfilAtletaData() {
         tipo_usuario: "",
         plan: ""
     });
-
+    console.log(idUsuario);
     // call api and load the data'user
     useEffect(() => {
         // Solo se ejecuta cuando idUsuario cambia
-        getPerfilUsuario()
+        getPerfilUsuario(idUsuario.idUsuario)
             .then(data => {
                 setPerfilUsuario(data.perfilUsuario);
             })
             .catch(err => console.error("Error al cargar perfil:", err));
     }, []);
 
-    console.log(perfilUsuario)
-
-    
+   console.log(perfilUsuario);
     return (
     <>
     <div className="w-100">
@@ -65,9 +64,9 @@ export function PerfilAtletaData() {
                     </div>
                 </div>
                 <div className="d-flex gap-3 my-3">
-                    <button className="btn btn-outline-primary">Mi Suscripción</button>
+                    <Link to='/gym-365/user/suscripcion' className="btn btn-outline-primary">Mi Suscripción</Link>
                     <button className="btn btn-outline-primary">Actualizar mis Datos</button>
-                    <button className="btn btn-outline-primary">Contactar a Servicio al Cliente</button>
+                    <HashLink to='/contactos#atencion-cliente' target="_blank" rel="nooperner noreferrer" className="btn btn-outline-primary">Servicio al Cliente</HashLink>
                 </div>
                 <div>
 
@@ -134,7 +133,7 @@ export function PlanEntrenoUserData() {
                     <li className="list-group-item"><b>Renovacion automatica</b>: {dataSuscripcion.estado}</li>
                 </ul>
                 <ul className="list-group">
-                    <li className="list-group-item"><a href="#">Info. Acerca de las Suscripciones</a></li>
+                    <li className="list-group-item"><Link to="/gym-365/user/suscripcion">Info. Acerca de las Suscripciones</Link></li>
                     <li className="list-group-item">
                         <button className="btn btn-outline-primary">
                             Actualizar Plan

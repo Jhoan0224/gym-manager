@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { findUserById, findUserByEmail, findUserByNames } from "../api/admin-usuarios";
+import { findUserById, findUserByEmail, findUserByNames } from "../api/admin-usuarios.api";
 import { ToastMessage } from "./ToastMessage";
 
 const TIPO_BUSQUEDA = {

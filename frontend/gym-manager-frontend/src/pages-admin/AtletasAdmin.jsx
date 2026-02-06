@@ -8,7 +8,7 @@ export function AtletasAdmin() {
     const [listaAtletas, setListaAtletas] = useState([]);
 
     const getPerfilUsuario = (idUsuario) => {
-        navigate('/gym-admin/perfil-atleta', {state: {idUsuario: idUsuario}});
+        navigate('/gym-365/admin/perfil-atleta', {state: {idUsuario: idUsuario}});
     }
     
     return(
