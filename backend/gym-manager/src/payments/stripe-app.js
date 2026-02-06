@@ -4,8 +4,6 @@
 
 // const stripeApp = express.Router();
 
-// const stripeModule = new stripe('');
-
 // stripeApp.post('/load', async (req, res) => {
 //   const session = await stripeModule.checkout.sessions.create({
 //     line_items: [
