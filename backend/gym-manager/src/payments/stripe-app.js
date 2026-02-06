@@ -4,7 +4,7 @@
 
 // const stripeApp = express.Router();
 
-// const stripeModule = new stripe('sk_test_51SqRviPpNnOrueC9Z4mgNxMAecf84gffgR13Of4GzvBZgoRxbF4DwHgW3mZoyMeN84aPAepcFXi0SOXtlHyWFP0i0003pUK41R');
+// const stripeModule = new stripe('');
 
 // stripeApp.post('/load', async (req, res) => {
 //   const session = await stripeModule.checkout.sessions.create({
